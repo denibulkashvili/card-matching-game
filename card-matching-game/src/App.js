@@ -4,6 +4,12 @@ import DisplayGrid from './components/DisplayGrid';
 
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      gameState: gameState.Stopped,
+    };
+  }
   render() {
     return (
       <div className="App">
