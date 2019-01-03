@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function Button() {
+export default function Button(props) {
   return (
     <div>
-      <button>Start/Reset</button>
+      <button onClick={props.handleClick} className="btn" >{props.buttonLabel}</button>
     </div>
   )
 }

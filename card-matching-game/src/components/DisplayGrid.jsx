@@ -5,8 +5,8 @@ export default class DisplayGrid extends Component {
 
   render() {
     return (
-      <div>
-        This is a display grid.
+      <div id="display">
+        This is a display grid. The game is now {this.props.gameStateName}.
         <Card />
         <Card />
       </div>

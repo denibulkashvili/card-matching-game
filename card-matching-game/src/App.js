@@ -29,12 +29,37 @@ class App extends Component {
         return '';
     }
   }
+  
+  get buttonLabel() {
+    const gameStateName = this.gameStateName;
+    if (gameStateName === 'Running') {
+      return 'Stop';
+    }
+    else {
+      return 'Start';
+    }
+  }
+
+  changeGameState = () => {
+    const gameStateName = this.gameStateName;
+    if (gameStateName==='Running') {
+      this.setState({
+        gameState: gameState.Stopped
+      });
+    }
+    else {
+      this.setState({
+        gameState: gameState.Running
+      });
+    }
+  }
+
   render() {
     return (
       <div className="App">
-        <h1 className='app-title'>Card Matching Game</h1> 
-        <DisplayGrid />
-        <Button />
+        <h1 className="app-title">Card Matching Game</h1> 
+        <DisplayGrid gameStateName={this.gameStateName} />
+        <Button buttonLabel={this.buttonLabel} handleClick={this.changeGameState} />
       </div>
     );
   }
