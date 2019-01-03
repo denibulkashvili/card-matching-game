@@ -1,7 +1,6 @@
 import React from 'react';
 import '../tests/setup';
 import { shallow, mount } from 'enzyme';
-import Display from './DisplayGrid';
 import App from '../App';
 import Button from './ButtonReusable';
 
