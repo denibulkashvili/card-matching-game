@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Card from './CardReusable';
 
-export default class DisplayGrid extends Component {
+export default function DisplayGrid(props) {
 
-  render() {
     return (
       <div id="display">
         This is a display grid. The game is now {this.props.gameStateName}.
@@ -12,4 +11,3 @@ export default class DisplayGrid extends Component {
       </div>
     )
   }
-}
