@@ -54,11 +54,21 @@ class App extends Component {
     }
   }
 
+  
+
   render() {
+    let display;
+    if (this.gameStateName === 'Running') {
+      display = <DisplayGrid gameStateName={this.gameStateName} />
+    } 
+    else {
+      display = <div id="display">Press Start to run the game!</div>
+    }
+
     return (
       <div className="App">
         <h1 className="app-title">Card Matching Game</h1> 
-        <DisplayGrid gameStateName={this.gameStateName} />
+        {display}
         <Button buttonLabel={this.buttonLabel} handleClick={this.changeGameState} />
       </div>
     );
