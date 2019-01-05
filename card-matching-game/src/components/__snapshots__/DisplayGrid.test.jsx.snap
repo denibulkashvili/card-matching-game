@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Display /> component matches snapshot 1`] = `
+<div
+  id="display"
+>
+  <div
+    id="image-grid"
+  >
+    <img
+      alt=""
+      className="image"
+      onClick={[Function]}
+      src="/img/cover.png"
+    />
+    <img
+      alt=""
+      className="image"
+      onClick={[Function]}
+      src="/img/cover.png"
+    />
+    <img
+      alt=""
+      className="image"
+      onClick={[Function]}
+      src="/img/cover.png"
+    />
+    <img
+      alt=""
+      className="image"
+      onClick={[Function]}
+      src="/img/cover.png"
+    />
+    <img
+      alt=""
+      className="image"
+      onClick={[Function]}
+      src="/img/cover.png"
+    />
+    <img
+      alt=""
+      className="image"
+      onClick={[Function]}
+      src="/img/cover.png"
+    />
+    <img
+      alt=""
+      className="image"
+      onClick={[Function]}
+      src="/img/cover.png"
+    />
+    <img
+      alt=""
+      className="image"
+      onClick={[Function]}
+      src="/img/cover.png"
+    />
+    <img
+      alt=""
+      className="image"
+      onClick={[Function]}
+      src="/img/cover.png"
+    />
+    <img
+      alt=""
+      className="image"
+      onClick={[Function]}
+      src="/img/cover.png"
+    />
+    <img
+      alt=""
+      className="image"
+      onClick={[Function]}
+      src="/img/cover.png"
+    />
+    <img
+      alt=""
+      className="image"
+      onClick={[Function]}
+      src="/img/cover.png"
+    />
+  </div>
+</div>
+`;

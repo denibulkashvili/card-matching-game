@@ -52,6 +52,7 @@ class App extends Component {
         gameState: gameState.Running
       });
     }
+    console.log(`gameStateName changed to ${gameStateName}.`)
   }
 
   

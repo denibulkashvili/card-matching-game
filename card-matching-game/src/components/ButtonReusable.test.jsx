@@ -13,10 +13,12 @@ describe('<Button />', () => {
 
   it('simulates click event', () => {
     const appComponent = mount(<App />);
+    const gameStateDisplay = appComponent.find('div#display').text();
+    expect(gameStateDisplay).toMatch(/Press Start to run the game!/);
     const button = appComponent.find('.btn');
     button.simulate('click');
-    const gameStateDisplay = appComponent.find('div#display').text();
-    expect(gameStateDisplay).toMatch(/This is a display grid. The game is now Running./);
+    expect(appComponent.find('.App').text()).not.toMatch(/Press Start to run the game!/);
+    
   })
 });
 
