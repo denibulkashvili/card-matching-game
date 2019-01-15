@@ -1,25 +1,38 @@
 import React, { Component } from 'react';
 import Card from './CardReusable';
+
+const vocab = ['chocolate', 'candy', 'present', 'card', 'baloon', 'cake'];
+
 export default class DisplayGrid extends Component {
+    
+  doubleVocabSize = (arr) => {
+    const duplicateArr = [...arr];
+    const newArr = arr.concat(duplicateArr);
+    return newArr;
+  }
+  shuffleVocab = (arr) => {
+    for (let i = arr.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1));
+      let temp = arr[i];
+      arr[i] = arr[j];
+      arr[j] = temp;
+    }
+  }
+  newVocab = this.doubleVocabSize(vocab);
+  shuffledVocab = this.shuffleVocab(this.newVocab);
   
+
+  handleChange = () => {
+    return true;
+  }
+
   render() {
     return (
-      <div id="display">
-        <div id="image-grid">
-          <Card src={"/img/img01.JPG"} vocabId={1} />
-          <Card src={"/img/img02.JPG"} vocabId={2} />
-          <Card src={"/img/txt03.JPG"} vocabId={3} />
-          <Card src={"/img/img05.JPG"} vocabId={5} />
-          <Card src={"/img/txt04.JPG"} vocabId={4} />
-          <Card src={"/img/txt06.JPG"} vocabId={6} />
-          <Card src={"/img/img04.JPG"} vocabId={4} />
-          <Card src={"/img/img06.JPG"} vocabId={6} />
-          <Card src={"/img/txt01.JPG"} vocabId={1} />
-          <Card src={"/img/txt02.JPG"} vocabId={2} />
-          <Card src={"/img/img03.JPG"} vocabId={3} />
-          <Card src={"/img/txt05.JPG"} vocabId={5} />
-        </div>
-      </div>
+      <div className="display-grid">
+        {this.newVocab.map(card => (
+              <Card name={card} onChange={this.handleChange} />
+        ))}
+      </div>            
     );
   }
   

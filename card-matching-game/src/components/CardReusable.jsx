@@ -19,12 +19,18 @@ export default class Card extends Component {
   
   render() {
     return (
-      <img 
-        className="image" 
-        src={this.state.isCardUncovered ? this.props.src : "/img/cover.png"} 
-        alt=""
-        onClick={this.handleClick}
-      />
+      <div className={
+             `single-card 
+             has-text-centered
+             ${this.state.isCardUncovered ? "card-front" : "card-back"}`
+           } 
+           onClick={this.handleClick} 
+      >
+       {this.state.isCardUncovered ? this.props.name : ""}
+      </div>
+        
+        
+    
     )
   }
   

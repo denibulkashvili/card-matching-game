@@ -68,9 +68,13 @@ class App extends Component {
 
     return (
       <div className="App">
-        <h1 className="app-title">Card Matching Game</h1> 
-        {display}
-        <Button buttonLabel={this.buttonLabel} handleClick={this.changeGameState} />
+        <div className="container">
+          <h1 className="title is-1 content has-text-white has-text-centered">Card Matching Game</h1> 
+          <div className="box">
+            {display}
+          </div>
+          <Button buttonLabel={this.buttonLabel} handleClick={this.changeGameState} />
+        </div>
       </div>
     );
   }
