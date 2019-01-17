@@ -1,79 +1,152 @@
 import React, { Component } from 'react';
-import Button from './components/ButtonReusable';
-import DisplayGrid from './components/DisplayGrid';
+import Button from './components/Button';
+import Card from './components/CardReusable';
 
-
-const gameState = {
-  Stopped: 0,
-  Running: 1,
-  Finished: 2
-}
+const vocabList = [
+  'colorful macaw', 'plain egret', 'dangerous jaguar', 
+  'friendly river dolphin', 'energetic spider monkey', 'calm sloth',
+  'colorful macaw', 'plain egret', 'dangerous jaguar', 
+  'friendly river dolphin', 'energetic spider monkey', 'calm sloth'
+];
+    
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      gameState: gameState.Stopped,
+      isGameRunning: false,
+      cards: vocabList,
+      matchedCards: [],
+      flippedCards: [],
+      clickedCard: ''
     };
+    this.toggleGame = this.toggleGame.bind(this);
+    this.compareCards = this.compareCards.bind(this);
   }
 
-  get gameStateName() {
-    const currentGameState = this.state.gameState;
-    switch(currentGameState) {
-      case 0:
-        return 'Stopped';
-      case 1:
-        return 'Running';
-      case 2:
-        return 'Finished';
-      default:
-        return '';
-    }
+  toggleGame() {
+    const isCurrentlyRunning = this.state.isGameRunning;
+    this.setState({
+      isGameRunning: !(isCurrentlyRunning),
+      // reset states
+      matchedCards: [],
+      flippedCards: [],
+      clickedCard: ''
+    }, () => { //optional callback parameter
+      console.log(`The game is now ${this.state.isGameRunning ? 'running' : 'stopped'}`);
+    });
+    
   }
   
   get buttonLabel() {
-    const gameStateName = this.gameStateName;
-    if (gameStateName === 'Running') {
-      return 'Stop';
-    }
-    else {
-      return 'Start';
-    }
+    return this.state.isGameRunning ? 'Stop' : 'Start';
   }
-
-  changeGameState = () => {
-    const gameStateName = this.gameStateName;
-    if (gameStateName==='Running') {
-      this.setState({
-        gameState: gameState.Stopped
-      });
-    }
-    else {
-      this.setState({
-        gameState: gameState.Running
-      });
-    }
-    console.log(`gameStateName changed to ${gameStateName}.`)
-  }
-
   
+  isCardFlipped = (word) => {
+    const count = this.state.flippedCards.length;
+    if (count !== 0) {
+      for(let i=0; i<count; i++) {
+        if(this.state.flippedCards[i]===word) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  get cardsFacedFront() {
+    return [...this.state.flippedCards, ...this.state.matchedCards];
+  }
+
+  isCardFrontSide = (word) => {
+    const list = this.cardsFacedFront;
+    console.log(`Word is front side: ${word}`);
+    const count = list.length;
+    if (count !== 0) {
+      for(let i=0; i<count; i++) {
+        if(list[i]===word) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  compareCards(card1, card2) {
+    return card1 === card2;
+  }
+
+  flipCard = (word) => {
+    this.setState({clickedCard: word});
+    this.setState(state => {
+      const flippedCards = state.flippedCards.concat(state.clickedCard);
+      return {
+        flippedCards,
+        clickedCard: ''
+      };
+    }, () => {
+      console.log(`The card is added to flippedCards: ${this.state.flippedCards}`);
+      if (this.state.flippedCards.length === 2) {
+        const isFlippedCardsMatch = this.compareCards(...this.state.flippedCards);
+        if (isFlippedCardsMatch) {
+          this.setState(state =>{
+            const matchedCards = state.matchedCards.concat(...state.flippedCards);
+            return {
+              matchedCards,
+              flippedCards: [],
+              clickedCard: ''
+            };
+          }, () => {
+            console.log(`The cards are added to matchedCards: ${this.state.matchedCards}`);
+          });
+        }
+        else {
+          this.setState({
+            flippedCards: [],
+            clickedCard: ''
+          }, () => {
+            console.log('No match!');
+          });
+        }
+      }
+    });
+  }
+
+  get renderCards() {
+    return (
+      this.state.cards.map((word, index) => {
+        return (<Card
+          key={index}
+          word={word} 
+          flipCard={this.flipCard} 
+          isCardFrontSide={this.isCardFrontSide(word)}
+          />
+        );
+      })
+    );
+  }
+
+  get renderedDisplay() {
+    if (this.state.isGameRunning) {
+      return (
+        <div id="display">
+          {this.renderCards}
+        </div>
+      );   
+    }
+    else {
+      return <div id="display">Press Start to run the game!</div>;
+    }
+  }
 
   render() {
-    let display;
-    if (this.gameStateName === 'Running') {
-      display = <DisplayGrid gameStateName={this.gameStateName} />
-    } 
-    else {
-      display = <div id="display">Press Start to run the game!</div>
-    }
-
     return (
       <div className="App">
         <div className="container">
           <h1 className="title is-1 content has-text-white has-text-centered">Card Matching Game</h1> 
           <div className="box">
-            {display}
+            {this.renderedDisplay}
           </div>
-          <Button buttonLabel={this.buttonLabel} handleClick={this.changeGameState} />
+          <Button buttonLabel={this.buttonLabel} handleClick={this.toggleGame} />
         </div>
       </div>
     );
