@@ -1,23 +1,32 @@
 import React, { Component } from 'react';
 import Button from './components/Button';
-import Card from './components/CardReusable';
+import Card from './components/Card';
 
 const vocabList = [
   'colorful macaw', 'plain egret', 'dangerous jaguar', 
   'friendly river dolphin', 'energetic spider monkey', 'calm sloth',
-  'colorful macaw', 'plain egret', 'dangerous jaguar', 
-  'friendly river dolphin', 'energetic spider monkey', 'calm sloth'
 ];
+const doubledVocabList = [...vocabList, ...vocabList];
+const shuffleCards = (arr) => {
+  for (let i = arr.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    let temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+  }
+  return arr;
+};
+const shuffledVocabList = shuffleCards(doubledVocabList);
+
     
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isGameRunning: false,
-      cards: vocabList,
       matchedCards: [],
-      flippedCards: [],
-      clickedCard: ''
+      clickedCard1: -1,
+      clickedCard2: -1
     };
     this.toggleGame = this.toggleGame.bind(this);
     this.compareCards = this.compareCards.bind(this);
@@ -29,8 +38,8 @@ class App extends Component {
       isGameRunning: !(isCurrentlyRunning),
       // reset states
       matchedCards: [],
-      flippedCards: [],
-      clickedCard: ''
+      clickedCard1: -1,
+      clickedCard2: -1
     }, () => { //optional callback parameter
       console.log(`The game is now ${this.state.isGameRunning ? 'running' : 'stopped'}`);
     });
@@ -41,29 +50,16 @@ class App extends Component {
     return this.state.isGameRunning ? 'Stop' : 'Start';
   }
   
-  isCardFlipped = (word) => {
-    const count = this.state.flippedCards.length;
-    if (count !== 0) {
-      for(let i=0; i<count; i++) {
-        if(this.state.flippedCards[i]===word) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
   get cardsFacedFront() {
-    return [...this.state.flippedCards, ...this.state.matchedCards];
+    return [this.state.clickedCard1, this.state.clickedCard2, ...this.state.matchedCards];
   }
 
-  isCardFrontSide = (word) => {
+  isCardFrontSide = (index) => {
     const list = this.cardsFacedFront;
-    console.log(`Word is front side: ${word}`);
     const count = list.length;
     if (count !== 0) {
       for(let i=0; i<count; i++) {
-        if(list[i]===word) {
+        if(list[i]===index) {
           return true;
         }
       }
@@ -71,54 +67,52 @@ class App extends Component {
     return false;
   }
 
-  compareCards(card1, card2) {
-    return card1 === card2;
+  compareCards(cardIndex1, cardIndex2) {
+    return shuffledVocabList[cardIndex1] === shuffledVocabList[cardIndex2];
   }
 
-  flipCard = (word) => {
-    this.setState({clickedCard: word});
-    this.setState(state => {
-      const flippedCards = state.flippedCards.concat(state.clickedCard);
-      return {
-        flippedCards,
-        clickedCard: ''
-      };
-    }, () => {
-      console.log(`The card is added to flippedCards: ${this.state.flippedCards}`);
-      if (this.state.flippedCards.length === 2) {
-        const isFlippedCardsMatch = this.compareCards(...this.state.flippedCards);
-        if (isFlippedCardsMatch) {
-          this.setState(state =>{
-            const matchedCards = state.matchedCards.concat(...state.flippedCards);
-            return {
-              matchedCards,
-              flippedCards: [],
-              clickedCard: ''
-            };
-          }, () => {
-            console.log(`The cards are added to matchedCards: ${this.state.matchedCards}`);
-          });
-        }
-        else {
-          this.setState({
-            flippedCards: [],
-            clickedCard: ''
-          }, () => {
-            console.log('No match!');
-          });
-        }
+  handleCardClick = (index) => {
+    if (this.state.clickedCard1 < 0) {
+      this.setState({clickedCard1: index}, () => {console.log(`Card clicked 1: ${this.state.clickedCard1} : ${shuffledVocabList[this.state.clickedCard1]} `)});
+    }
+    else if (this.state.clickedCard2 < 0) {
+      this.setState({clickedCard2: index}, () => {console.log(`Card clicked 2: ${this.state.clickedCard2} : ${shuffledVocabList[this.state.clickedCard2]} `)});
+    }
+    else {
+      const isFlippedCardsMatch = this.compareCards(this.state.clickedCard1, this.state.clickedCard2);
+      if (isFlippedCardsMatch) {
+        this.setState(state =>{
+          const matchedCards = state.matchedCards.concat(this.state.clickedCard1, this.state.clickedCard2);
+          return {
+            matchedCards,
+            clickedCard1: -1,
+            clickedCard2: -1
+          };
+        }, () => {
+          console.log(`The cards are added to matchedCards: ${this.state.matchedCards}`);
+        });
       }
-    });
+      else {
+        this.setState({
+          clickedCard1: -1,
+          clickedCard2: -1
+        }, () => {
+          alert('No match!');
+        });
+      }
+    }
   }
+  
 
   get renderCards() {
     return (
-      this.state.cards.map((word, index) => {
+      shuffledVocabList.map((word, index) => {
         return (<Card
           key={index}
-          word={word} 
-          flipCard={this.flipCard} 
-          isCardFrontSide={this.isCardFrontSide(word)}
+          word={word}
+          index={index} 
+          handleCardClick={this.handleCardClick} 
+          isCardFrontSide={this.isCardFrontSide(index)}
           />
         );
       })
