@@ -97,7 +97,7 @@ class App extends Component {
           clickedCard1: -1,
           clickedCard2: -1
         }, () => {
-          alert('No match!');
+          console.log('No match!');
         });
       }
     }
@@ -122,13 +122,13 @@ class App extends Component {
   get renderedDisplay() {
     if (this.state.isGameRunning) {
       return (
-        <div id="display">
+        <div className="display display-running-game shadow rounded">
           {this.renderCards}
         </div>
       );   
     }
     else {
-      return <div id="display">Press Start to run the game!</div>;
+      return <div className="display shadow rounded">Press Start to run the game!</div>;
     }
   }
 
@@ -136,10 +136,8 @@ class App extends Component {
     return (
       <div className="App">
         <div className="container">
-          <h1 className="title is-1 content has-text-white has-text-centered">Card Matching Game</h1> 
-          <div className="box">
-            {this.renderedDisplay}
-          </div>
+          <h1 className="title">Card Matching Game</h1> 
+          {this.renderedDisplay}
           <Button buttonLabel={this.buttonLabel} handleClick={this.toggleGame} />
         </div>
       </div>
