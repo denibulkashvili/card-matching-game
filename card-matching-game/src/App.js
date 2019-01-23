@@ -3,6 +3,8 @@ import Button from './components/Button';
 import Card from './components/Card';
 import { setTimeout } from 'timers';
 import { shuffledVocabList } from './vocabulary/vocabHandler';
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
     
 class App extends Component {
   constructor(props) {
@@ -15,6 +17,8 @@ class App extends Component {
     };
     this.toggleGame = this.toggleGame.bind(this);
     this.compareCards = this.compareCards.bind(this);
+    this.addNotification = this.addNotification.bind(this);
+    this.notificationDOMRef = React.createRef();
   }
 
   toggleGame() {
@@ -56,7 +60,22 @@ class App extends Component {
     return shuffledVocabList[cardIndex1] === shuffledVocabList[cardIndex2];
   }
 
+  addNotification(type, message) {
+    this.notificationDOMRef.current.addNotification({
+      message: message,
+      type: type,
+      insert: "top",
+      container: "top-center",
+      animationIn: ["animated", "fadeIn"],
+      animationOut: ["animated", "fadeOut"],
+      dismiss: { duration: 2000 },
+      dismissable: { click: true }
+    });
+  }
+
+
   handleMatchedCards() {
+    this.addNotification("success", 'The cards matched!');
     this.setState(state =>{
       const matchedCards = state.matchedCards.concat(this.state.clickedCard1, this.state.clickedCard2);
       return {
@@ -69,6 +88,7 @@ class App extends Component {
     });
   }
   handleUnmatchedCards() {
+    this.addNotification("danger", "No Match!");
     setTimeout(() =>{
       this.setState({
         clickedCard1: -1,
@@ -130,6 +150,7 @@ class App extends Component {
     return (
       <div className="App">
         <div className="container">
+          <ReactNotification ref={this.notificationDOMRef} />
           <h1 className="title">Card Matching Game</h1> 
           {this.renderedDisplay}
           <Button buttonLabel={this.buttonLabel} handleClick={this.toggleGame} />

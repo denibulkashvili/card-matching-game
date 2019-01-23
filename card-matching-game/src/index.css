@@ -55,6 +55,7 @@ code {
   border: 1px solid grey;
   min-height: 80px;
   font-size: 24px;
+  transition: all 0.5s ease;
 }
 .card-back {
   background: rgb(215, 159, 86);
