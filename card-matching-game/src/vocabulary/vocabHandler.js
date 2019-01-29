@@ -1,6 +1,10 @@
 const vocabList = [
-    'colorful macaw', 'plain egret', 'dangerous jaguar', 
-    'friendly river dolphin', 'energetic spider monkey', 'calm sloth',
+    'take public transportation', 'take reusable shopping bags',
+    'use energy-saving saving light bulbs', 
+    'keep the air conditioner on low', 
+    'grow your own vegetables', 
+    'dry clothes outside' 
+
   ];
   const doubledVocabList = [...vocabList, ...vocabList];
   const shuffleCards = (arr) => {
