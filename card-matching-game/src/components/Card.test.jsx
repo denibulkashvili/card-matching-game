@@ -1,6 +1,6 @@
 import React from 'react';
 import '../tests/setup';
-import Card from './CardReusable';
+import Card from './Card';
 import renderer from 'react-test-renderer';
 
 describe('<Card /> component', () => {

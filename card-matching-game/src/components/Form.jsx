@@ -34,7 +34,7 @@ class Form extends Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <label>
-          Enter words separated with commas (6 words would work best):
+          Enter new words:
           <input type="text" value={this.state.value} onChange={event => this.handleChange(event)} />
         </label>
         <input type="submit" value="Submit" />

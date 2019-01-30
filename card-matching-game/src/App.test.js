@@ -7,13 +7,13 @@ import App from './App';
 describe('<App />', () => {
   it('shows title correctly', () => {
     const component = shallow(<App />);
-    expect(component.find('.app-title').text()).toMatch(/Card Matching Game/);
+    expect(component.find('.title').text()).toMatch(/Card Matching Game/);
   });
 
-  it('starts with the gameState equal Stopped', () => {
+  it('starts with the isGameRunning equal false', () => {
     const component = shallow(<App />);
-    const appState = component.state().gameState
-    expect(appState).toEqual(0);
+    const appState = component.state().isGameRunning
+    expect(appState).toEqual(false);
   })
   
 });
