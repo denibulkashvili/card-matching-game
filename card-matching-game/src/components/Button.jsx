@@ -1,7 +1,10 @@
 import React from 'react'
 
-export default function Button(props) {
+
+const Button = (props) => {
   return (
     <button onClick={props.handleClick} className="btn shadow rounded" >{props.buttonLabel}</button>
   )
 }
+
+export default Button;

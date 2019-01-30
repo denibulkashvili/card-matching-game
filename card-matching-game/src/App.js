@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import Button from './components/Button';
 import Card from './components/Card';
+import Form from './components/Form';
 import { setTimeout } from 'timers';
-import { shuffledVocabList } from './vocabulary/vocabHandler';
+import { shuffledVocabList, shuffleCards } from './vocabulary/vocabHandler';
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
     
@@ -10,6 +11,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      vocabList: shuffledVocabList,
       isGameRunning: false,
       matchedCards: [],
       clickedCard1: -1,
@@ -57,7 +59,7 @@ class App extends Component {
   }
 
   compareCards(cardIndex1, cardIndex2) {
-    return shuffledVocabList[cardIndex1] === shuffledVocabList[cardIndex2];
+    return this.state.vocabList[cardIndex1] === this.state.vocabList[cardIndex2];
   }
 
   addNotification(type, message) {
@@ -101,11 +103,11 @@ class App extends Component {
 
   handleCardClick = (index) => {
     if (this.state.clickedCard1 < 0) {
-      this.setState({clickedCard1: index}, () => {console.log(`Card clicked 1: ${this.state.clickedCard1} : ${shuffledVocabList[this.state.clickedCard1]} `)});
+      this.setState({clickedCard1: index}, () => {console.log(`Card clicked 1: ${this.state.clickedCard1} : ${this.state.vocabList[this.state.clickedCard1]} `)});
     }
     else if (this.state.clickedCard2 < 0) {
       this.setState({clickedCard2: index}, () => {
-        console.log(`Card clicked 2: ${this.state.clickedCard2} : ${shuffledVocabList[this.state.clickedCard2]} `);
+        console.log(`Card clicked 2: ${this.state.clickedCard2} : ${this.state.vocabList[this.state.clickedCard2]} `);
         const isFlippedCardsMatch = this.compareCards(this.state.clickedCard1, this.state.clickedCard2);
         if (isFlippedCardsMatch) {
           this.handleMatchedCards();   
@@ -117,10 +119,17 @@ class App extends Component {
     }
   }
   
+  updateVocab = (words) => {
+    const doubledWordsList = [...words, ...words];
+    const shuffledWords = shuffleCards(doubledWordsList);
+    this.setState({
+      vocabList: shuffledWords
+    })
+  }
 
   get renderCards() {
     return (
-      shuffledVocabList.map((word, index) => {
+      this.state.vocabList.map((word, index) => {
         return (<Card
           key={index}
           word={word}
@@ -142,7 +151,10 @@ class App extends Component {
       );   
     }
     else {
-      return <div className="display shadow rounded">Press Start to run the game!</div>;
+      return <div className="display shadow rounded">
+        Press Start to run the game!
+        <Form updateVocab={this.updateVocab} />
+      </div>;
     }
   }
 

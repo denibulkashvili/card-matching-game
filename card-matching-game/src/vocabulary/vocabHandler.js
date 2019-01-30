@@ -16,6 +16,8 @@ const vocabList = [
     }
     return arr;
   };
+
+  const shuffledVocabList = shuffleCards(doubledVocabList)
   
-  export const shuffledVocabList = shuffleCards(doubledVocabList);
+  export {shuffledVocabList, shuffleCards};
   
