@@ -98,7 +98,7 @@ class App extends Component {
       }, () => {
         console.log('No match!');
       });
-    }, 1000);
+    }, 2000);
   }
 
   handleCardClick = (index) => {

@@ -1,10 +1,5 @@
 const vocabList = [
-    'take public transportation', 'take reusable shopping bags',
-    'use energy-saving saving light bulbs', 
-    'keep the air conditioner on low', 
-    'grow your own vegetables', 
-    'dry clothes outside' 
-
+    'old', 'new', 'big', 'small', 'long', 'short'
   ];
   const doubledVocabList = [...vocabList, ...vocabList];
   const shuffleCards = (arr) => {
